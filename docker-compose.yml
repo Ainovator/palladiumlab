@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: ./pl-app
+      dockerfile: Dockerfile
+    container_name: pl-app
+    restart: always
+    working_dir: /var/www
+    env_file:
+      - .env
+    volumes:
+      - ./pl-app:/var/www
+  nginx:
+    image: nginx:1.19-alpine
+    container_name: pl-nginx
+    restart: always
+    ports:
+      - "8080:80"
+    volumes:
+      - ./app:/var/www
+      - ./nginx:/etc/nginx/conf.d
+
+  db:
+    image: mysql:latest
+    restart: always
+    container_name: pl-database
+    env_file:
+      - .env
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    restart: always
+    container_name: pl-phpmyadmin
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+volumes:
+  db_data:

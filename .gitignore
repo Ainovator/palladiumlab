@@ -1,0 +1,6 @@
+#Файлы
+.env
+
+#Папки
+/vendor
+/pl-app/vendor
