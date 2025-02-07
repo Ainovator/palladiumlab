@@ -122,46 +122,61 @@ class DatabaseUsersTest extends TestCase{
         $this->assertEquals(1, $stmt->rowCount());
       }
 
-      public function testUpdateUserById(){
-        $sql = "INSERT INTO users (name, email, created_at, updated_at)
-                VALUES (:name, :email, :created_at, :updated_at)";
-        $stmt = $this->db->prepare($sql);
+    public function testUpdateUserById(){
+        // Создаём случайного пользователя
+        $name = $this->generateRandomUsername();
+        $email = $this->generateRandomEmail();
+
+        // Вставляем нового пользователя
+        $sqlInsert = "INSERT INTO users (name, email, created_at, updated_at)
+            VALUES (:name, :email, :created_at, :updated_at)";
+        $stmt = $this->db->prepare($sqlInsert);
         $params = [
-            ":name" => $this->generateRandomUsername(),
-            ":email" => $this->generateRandomEmail(),
+            ":name" => $name,
+            ":email" => $email,
             ":created_at" => date("Y-m-d H:i:s"),
             ":updated_at" => date("Y-m-d H:i:s")
         ];
         $stmt->execute($params);
-        print_r($params);
-        $sql = "SELECT id FROM users WHERE email = :email";
-        $stmt = $this->db->prepare($sql);
-        $stmt->bindValue(':email', $params[':email']);
+
+        // Получаем id созданного пользователя
+        $sqlSelect = "SELECT id FROM users WHERE email = :email";
+        $stmt = $this->db->prepare($sqlSelect);
+        $stmt->bindValue(':email', $email);
         $stmt->execute();
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
         $id = $user['id'];
 
-        $sql = "UPDATE users SET name = :name, email = :email, updated_at = :updated_at WHERE id = :id";
-        $stmt = $this->db->prepare($sql);
-        $NewParams = [
-            ":name" => $this->generateRandomUsername(),
-            ":email" => $this->generateRandomEmail(),
+        $this->assertNotNull($id, "Пользователь не был создан.");
+
+        // Обновляем имя и email пользователя
+        $newName = $this->generateRandomUsername();
+        $newEmail = $this->generateRandomEmail();
+        $sqlUpdate = "UPDATE users SET name = :name, email = :email, updated_at = :updated_at WHERE id = :id";
+        $stmt = $this->db->prepare($sqlUpdate);
+        $newParams = [
+            ":name" => $newName,
+            ":email" => $newEmail,
             ":updated_at" => date("Y-m-d H:i:s"),
             ":id" => $id
         ];
+        $stmt->execute($newParams);
 
-        $stmt->execute($NewParams);
-        $this->assertEquals(1, $stmt->rowCount());
+        // Проверяем, что обновление прошло успешно
+        $this->assertEquals(1, $stmt->rowCount(), "Ошибка при обновлении пользователя.");
 
-        $sql = "SELECT * FROM users WHERE id = :id";
-        $stmt = $this->db->prepare($sql);
+        // Получаем обновлённого пользователя
+        $sqlNewSelect = "SELECT * FROM users WHERE id = :id";
+        $stmt = $this->db->prepare($sqlNewSelect);
         $stmt->bindValue(':id', $id);
         $stmt->execute();
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
-        print_r($user);
+        $updatedUser = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        echo "\n"."User id: " . $id . "\n";
-      }
+        // Сравниваем значения до и после обновления
+        $this->assertEquals($newName, $updatedUser['name'], "Имя пользователя не обновлено.");
+        $this->assertEquals($newEmail, $updatedUser['email'], "Email пользователя не обновлён.");
+    }
+
 
 
 }

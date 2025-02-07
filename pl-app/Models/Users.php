@@ -3,6 +3,7 @@
 namespace app\Models;
 
 use App\Core\Database\DatabaseConnection;
+use App\Models\Base;
 use PDO;
 
 class Users
@@ -45,5 +46,28 @@ class Users
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
 
+    }
+
+    public function selectAll(): array{
+        $sql = "SELECT * FROM users";
+        $stmt= $this->db;
+        $stmt->exec($sql);
+
+        $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if (!empty($users)) {
+            return $users;
+        } else {
+            return [];
+        }
+    }
+
+    public function selectUserById(int $id): ?array{
+        $sql = "SELECT * FROM users WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(':id', $id);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
     }
 }
