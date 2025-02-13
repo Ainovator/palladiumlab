@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="palladiumlab@localhost" uuid="952ed502-fd5a-4822-b951-46f2d2cd7113">
+    <data-source source="LOCAL" name="palladiumlab" uuid="b0e5f5fb-02b8-4844-9c17-f607bcb475ef">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>

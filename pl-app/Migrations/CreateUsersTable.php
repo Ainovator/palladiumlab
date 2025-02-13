@@ -6,7 +6,7 @@ use App\Core\Database\DatabaseConnection;
 
 class CreateUsersTable
 {
-    public static function createTable()
+    public static function createTable(): void
     {
         $db = DatabaseConnection::getInstance();
         $sql = "CREATE TABLE IF NOT EXISTS users (

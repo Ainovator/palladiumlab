@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/pl-app/Migrations/CreateRolesTable.php" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/pl-app/Migrations/CreateUserRolesTable.php" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/pl-app/Migrations/CreateUsersTable.php" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/pl-app/Models/ORM/Base.php" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/pl-app/Models/UserRoles.php" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/pl-app/Models/Users.php" dialect="MySQL" />
-    <file url="file://$PROJECT_DIR$/pl-app/Tests/DatabaseUsersTest.php" dialect="MySQL" />
   </component>
 </project>

@@ -22,7 +22,7 @@ class DatabaseConnection extends PDO
 
         $config = require __DIR__ . '/../../Config/db.php';
 
-        $dsn = "mysql:host=pl-database;dbname=".$config["database"].";charset=utf8mb4";
+        $dsn = "mysql:host=". $config["host"] .";dbname=".$config["database"].";charset=utf8mb4";
         $username = $config["user"] ?? "empty";
         $password = $config["password"] ?? "empty";
 
@@ -32,7 +32,6 @@ class DatabaseConnection extends PDO
             throw new RuntimeException("Подключение не удалось: ". $e->getMessage());
         }
     }
-
     /**
      * Возвращает единственный экземпляр класса
      * @return DatabaseConnection
